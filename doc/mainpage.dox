@@ -1,0 +1,101 @@
+/** @mainpage GLSkeleton
+
+@author Jim Susinno
+
+@date July 2013
+
+
+GLSkeleton is a universal skeletal framework for an OpenGL app.
+Designed to provide a basic test harness for Windows, Linux and MacOS
+using the Glut, Glfw, SDL or Pez(native) frameworks, it is intended for a SVN Export
+command to be the start of each new GL project.
+
+
+
+@section requirements Requirements
+This app requires CMake and python, and one of the following frameworks:
+<ul>
+<li>glut
+<li>glfw
+<li>SDL
+<li>Pez
+</ul>
+
+
+sudo apt-get install libsdl1.2-dev
+
+
+@section howto How To Use This Skeleton
+To select which framework to us for compiling the skeleton app, edit CMakeLists.txt.
+On line 13, the variable GL_FRAMEWORK is set to an all-caps string.
+<pre>
+SET( GL_FRAMEWORK "GLUT" )
+</pre>
+Change the string
+to the framework of your choice, then:
+
+<table border="1">
+
+<tr>
+<td>
+<strong>Windows</strong>
+ - Create the folder build/ in the project's home(same directory where CMakeLists.txt lives)
+ - Shift+right-click it in Explorer->"Open command window here"
+ - ...\\build> cmake .. -G "Visual Studio 10"
+ - Double-click the only .sln file in build to open it in Visual Studio
+ - Right-click the GLSkeleton project in Solution Explorer, "Set as StartUp Project"
+ - F7 to build, F5 to build and run
+</td>
+<td>
+<strong>Linux</strong>
+ - $> mkdir build
+ - $> cd build
+ - $> cmake .. && make
+ - $> ./GLSkeleton
+</td>
+</tr>
+
+</table>
+
+
+
+@section functionalitytable Functionality Table
+<table border="1">
+
+<tr>
+<td></td>
+<td><strong>Glut</strong></td>
+<td><strong>Glfw</strong></td>
+<td><strong>SDL</strong></td>
+<td><strong>Pez</strong></td>
+</tr>
+
+<tr>
+<td><strong>Windows</strong></td>
+<td>App, Tri, Glut</td>
+<td>App, Tri, Glut</td>
+<td>App, Tri, Glut</td>
+<td>App</td>
+</tr>
+
+<tr>
+<td><strong>Linux</strong></td>
+<td>App, Tri, Glut</td>
+<td>App, Tri</td>
+<td>App, Tri</td>
+<td></td>
+</tr>
+
+<tr>
+<td><strong>MacOS</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+</table>
+
+
+
+*/
