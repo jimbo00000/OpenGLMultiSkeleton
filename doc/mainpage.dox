@@ -16,7 +16,8 @@ command to be the start of each new GL project.
 This app requires CMake and python, and one of the following frameworks:
 <ul>
 <li>glut
-<li>glfw
+<li>glfw2
+<li>glfw3
 <li>SDL
 <li>Pez
 </ul>
@@ -29,6 +30,7 @@ sudo apt-get install libsdl1.2-dev
 To select which framework to us for compiling the skeleton app, edit CMakeLists.txt.
 On line 13, the variable GL_FRAMEWORK is set to an all-caps string.
 <pre>
+# GLUT, GLFW2, GLFW3, SDL, PEZ
 SET( GL_FRAMEWORK "GLUT" )
 </pre>
 Change the string
@@ -65,7 +67,8 @@ to the framework of your choice, then:
 <tr>
 <td></td>
 <td><strong>Glut</strong></td>
-<td><strong>Glfw</strong></td>
+<td><strong>Glfw2</strong></td>
+<td><strong>Glfw3</strong></td>
 <td><strong>SDL</strong></td>
 <td><strong>Pez</strong></td>
 </tr>
@@ -75,12 +78,14 @@ to the framework of your choice, then:
 <td>App, Tri, Glut</td>
 <td>App, Tri, Glut</td>
 <td>App, Tri, Glut</td>
+<td>App, Tri, Glut</td>
 <td>App</td>
 </tr>
 
 <tr>
 <td><strong>Linux</strong></td>
 <td>App, Tri, Glut</td>
+<td></td>
 <td>App, Tri</td>
 <td>App, Tri</td>
 <td></td>
@@ -88,6 +93,7 @@ to the framework of your choice, then:
 
 <tr>
 <td><strong>MacOS</strong></td>
+<td></td>
 <td></td>
 <td></td>
 <td></td>

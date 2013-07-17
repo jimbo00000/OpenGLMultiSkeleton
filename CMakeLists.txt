@@ -8,9 +8,9 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 
 #
 # Choose from the following frameworks here:
-# GLUT, GLFW, GLFW3, SDL, PEZ
+# GLUT, GLFW2, GLFW3, SDL, PEZ
 #
-SET( GL_FRAMEWORK "GLFW3" )
+SET( GL_FRAMEWORK "GLFW2" )
 
 #
 # Platform-dependent section: Windows, Linux, MacOS
@@ -48,7 +48,7 @@ IF( WIN32 )
     #
     IF( GL_FRAMEWORK STREQUAL "SDL" )
         SET( FRAMEWORK_LIBS SDL.lib )
-    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
         SET( FRAMEWORK_LIBS glfw.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
         SET( FRAMEWORK_LIBS glfw3.lib )
@@ -85,7 +85,7 @@ ELSEIF( UNIX )
     #
     IF( GL_FRAMEWORK STREQUAL "SDL" )
         SET( FRAMEWORK_LIBS SDL )
-    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
         SET( FRAMEWORK_LIBS glfw )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
         SET( FRAMEWORK_LIBS glfw3 )
@@ -126,8 +126,8 @@ ADD_LIBRARY( PROJ_LIBS
 #
 IF( GL_FRAMEWORK STREQUAL "SDL" )
     SET( SKELETON_FILE "sdl_skeleton.cpp" )
-ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
-    SET( SKELETON_FILE "glfw_skeleton.cpp" )
+ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
+    SET( SKELETON_FILE "glfw2_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
     SET( SKELETON_FILE "glfw3_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLUT" )
