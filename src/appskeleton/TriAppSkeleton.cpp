@@ -7,7 +7,6 @@
 #endif
 
 #include <GL/glew.h>
-#include <GL/glfw.h>
 
 #include "AppSkeleton.h"
 
@@ -117,7 +116,7 @@ void TriAppSkeleton::mouseDown(int button, int state, int x, int y)
     which_button = button;
     oldx = newx = x;
     oldy = newy = y;
-    if (state == GLFW_RELEASE)
+    if (state == 0) // 0 == GLFW_RELEASE
     {
         which_button = 0;
     }

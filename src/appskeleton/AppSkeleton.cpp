@@ -7,7 +7,6 @@
 #endif
 
 #include <GL/glew.h>
-#include <GL/glfw.h>
 
 #include "AppSkeleton.h"
 

@@ -8,9 +8,9 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 
 #
 # Choose from the following frameworks here:
-# GLUT, GLFW, SDL, PEZ
+# GLUT, GLFW, SDL, PEZ, CINDER
 #
-SET( GL_FRAMEWORK "PEZ" )
+SET( GL_FRAMEWORK "CINDER" )
 
 #
 # Platform-dependent section: Windows, Linux, MacOS
@@ -38,6 +38,10 @@ IF( WIN32 )
     INCLUDE_DIRECTORIES( "${GLEW_ROOT}/include" )
     LINK_DIRECTORIES   ( "${GLEW_ROOT}/lib" )
     #ADD_DEFINITIONS( -DGLEW_STATIC )
+	
+	SET( CINDER_ROOT "${GL_LIBS_HOME}/cinder" )
+	INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
+	LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
 
     #
     # Framework and platform-dependent lib section
@@ -46,6 +50,23 @@ IF( WIN32 )
         SET( FRAMEWORK_LIBS SDL.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
         SET( FRAMEWORK_LIBS glfw.lib )
+	ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
+		#
+		#	Force static runtime linking and ignore libcmt.lib in MSVC for cinder
+		#
+		IF( MSVC )
+			foreach(flag_var
+				CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+				CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+				if(${flag_var} MATCHES "/MD")
+					string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+				endif(${flag_var} MATCHES "/MD")
+			endforeach(flag_var)
+			
+			SET(CMAKE_EXE_LINKER_FLAGS_DEBUG /NODEFAULTLIB:\"libcmt.lib\")
+		ENDIF()
+		
+		ADD_DEFINITIONS( "-D_UNICODE" "-DUNICODE" "-DGLEW_STATIC" )
     ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
         SET( CONSOLE_SYSTEM WIN32 )
     ENDIF()
@@ -120,12 +141,14 @@ IF( GL_FRAMEWORK STREQUAL "SDL" )
     SET( SKELETON_FILE "sdl_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
     SET( SKELETON_FILE "glfw_skeleton.cpp" )
+ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
+    SET( SKELETON_FILE "cinder_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLUT" )
     SET( SKELETON_FILE "glut_skeleton.cpp" )
 #ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" ) # handled in platform-dependent section
 ENDIF()
 
-IF( GL_FRAMEWORK STREQUAL "PEZ" )
+IF( GL_FRAMEWORK STREQUAL "PEZ" OR GL_FRAMEWORK STREQUAL "CINDER" )
     ADD_EXECUTABLE( ${PROJECT_NAME} WIN32 src/${SKELETON_FILE} )
 ELSE()
     ADD_EXECUTABLE( ${PROJECT_NAME} src/${SKELETON_FILE} )
@@ -136,3 +159,12 @@ TARGET_LINK_LIBRARIES( ${PROJECT_NAME}
     ${PLATFORM_LIBS}
 )
 
+#
+#	Add Cinder's build specific lib file 
+#
+IF( GL_FRAMEWORK STREQUAL "CINDER" )
+
+	TARGET_LINK_LIBRARIES( ${PROJECT_NAME} debug cinder_d.lib )
+	TARGET_LINK_LIBRARIES( ${PROJECT_NAME} optimized cinder.lib )
+
+ENDIF()
