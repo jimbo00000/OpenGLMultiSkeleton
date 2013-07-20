@@ -8,10 +8,10 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 
 #
 # Choose from the following frameworks here:
-# GLUT, GLFW, SDL, PEZ, CINDER
+
+# GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 #
 SET( GL_FRAMEWORK "CINDER" )
-
 #
 # Platform-dependent section: Windows, Linux, MacOS
 #
@@ -29,6 +29,10 @@ IF( WIN32 )
     SET( GLFW_ROOT "${GL_LIBS_HOME}/glfw-2.7.8.bin.WIN32" )
     INCLUDE_DIRECTORIES( "${GLFW_ROOT}/include" )
     LINK_DIRECTORIES   ( "${GLFW_ROOT}/lib-msvc100" )
+
+    SET( GLFW3_ROOT "${GL_LIBS_HOME}/glfw-3.0.1.bin.WIN32" )
+    INCLUDE_DIRECTORIES( "${GLFW3_ROOT}/include" )
+    LINK_DIRECTORIES   ( "${GLFW3_ROOT}/lib-msvc100" )
 
     SET( SDL_ROOT "${GL_LIBS_HOME}/SDL-1.2.15" )
     INCLUDE_DIRECTORIES( "${SDL_ROOT}/include" )
@@ -48,8 +52,11 @@ IF( WIN32 )
     #
     IF( GL_FRAMEWORK STREQUAL "SDL" )
         SET( FRAMEWORK_LIBS SDL.lib )
-    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
+
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
         SET( FRAMEWORK_LIBS glfw.lib )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
+		SET( FRAMEWORK_LIBS glfw3.lib )
 	ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
 		#
 		#	Force static runtime linking and ignore libcmt.lib in MSVC for cinder
@@ -100,8 +107,11 @@ ELSEIF( UNIX )
     #
     IF( GL_FRAMEWORK STREQUAL "SDL" )
         SET( FRAMEWORK_LIBS SDL )
-    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
+
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
         SET( FRAMEWORK_LIBS glfw )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
+        SET( FRAMEWORK_LIBS glfw3 )
     ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
         #SET( CONSOLE_SYSTEM WIN32 )
     ENDIF()
@@ -139,14 +149,18 @@ ADD_LIBRARY( PROJ_LIBS
 #
 IF( GL_FRAMEWORK STREQUAL "SDL" )
     SET( SKELETON_FILE "sdl_skeleton.cpp" )
-ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
-    SET( SKELETON_FILE "glfw_skeleton.cpp" )
+
+ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
+    SET( SKELETON_FILE "glfw2_skeleton.cpp" )
+ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
+    SET( SKELETON_FILE "glfw3_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
     SET( SKELETON_FILE "cinder_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLUT" )
     SET( SKELETON_FILE "glut_skeleton.cpp" )
 #ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" ) # handled in platform-dependent section
 ENDIF()
+
 
 IF( GL_FRAMEWORK STREQUAL "PEZ" OR GL_FRAMEWORK STREQUAL "CINDER" )
     ADD_EXECUTABLE( ${PROJECT_NAME} WIN32 src/${SKELETON_FILE} )
