@@ -5,21 +5,21 @@
 @date July 2013
 
 
-GLSkeleton is a universal skeletal framework for an OpenGL app.
-Designed to provide a basic test harness for Windows, Linux and MacOS
-using the Glut, Glfw, SDL or Pez(native) frameworks, it is intended for a SVN Export
-command to be the start of each new GL project.
+GLSkeleton is a basic test harness for an OpenGL app.
+Designed to run on a multitude of frameworks across multiple
+operating systems, it is intended as an app template for forking.
 
 
 
 @section requirements Requirements
 This app requires CMake and python, and one of the following frameworks:
 <ul>
-<li>glut
-<li>glfw2
-<li>glfw3
-<li>SDL
-<li>Pez
+<li>GLUT http://user.xmission.com/~nate/glut.html
+<li>GLFW 2 http://www.glfw.org/
+<li>GLFW 3 http://www.glfw.org/
+<li>SDL  http://www.libsdl.org/
+<li>Pez  http://prideout.net/blog/?p=36
+<li>Cinder http://libcinder.org/
 </ul>
 
 
@@ -30,7 +30,7 @@ sudo apt-get install libsdl1.2-dev
 To select which framework to us for compiling the skeleton app, edit CMakeLists.txt.
 On line 13, the variable GL_FRAMEWORK is set to an all-caps string.
 <pre>
-# GLUT, GLFW2, GLFW3, SDL, PEZ
+# GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 SET( GL_FRAMEWORK "GLUT" )
 </pre>
 Change the string
@@ -66,11 +66,12 @@ to the framework of your choice, then:
 
 <tr>
 <td></td>
-<td><strong>Glut</strong></td>
-<td><strong>Glfw2</strong></td>
-<td><strong>Glfw3</strong></td>
+<td><strong>GLUT</strong></td>
+<td><strong>GLFW 2</strong></td>
+<td><strong>GLFW 3</strong></td>
 <td><strong>SDL</strong></td>
 <td><strong>Pez</strong></td>
+<td><strong>Cinder</strong></td>
 </tr>
 
 <tr>
@@ -80,6 +81,7 @@ to the framework of your choice, then:
 <td>App, Tri, Glut</td>
 <td>App, Tri, Glut</td>
 <td>App</td>
+<td>App, Tri, Glut</td>
 </tr>
 
 <tr>
@@ -89,10 +91,12 @@ to the framework of your choice, then:
 <td>App, Tri</td>
 <td>App, Tri</td>
 <td></td>
+<td></td>
 </tr>
 
 <tr>
 <td><strong>MacOS</strong></td>
+<td></td>
 <td></td>
 <td></td>
 <td></td>

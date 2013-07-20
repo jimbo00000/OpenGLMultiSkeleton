@@ -1,6 +1,6 @@
 OpenGLMultiSkeleton
 
-Windows/Linux OpenGL skeleton for Glut, Glfw, SDL or Pez.
+Cross-platform OpenGL skeleton for multiple frameworks. Fork and select which one you want.
 
 The build process requires CMake and Python 2.7. Python is used to generate
 a C++ source header with hardcoded strings for shader source in text files under shaders/.
