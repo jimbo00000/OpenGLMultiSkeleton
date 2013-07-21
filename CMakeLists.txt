@@ -11,7 +11,7 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 
 # GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 #
-SET( GL_FRAMEWORK "CINDER" )
+SET( GL_FRAMEWORK "GLFW3" )
 #
 # Platform-dependent section: Windows, Linux, MacOS
 #
