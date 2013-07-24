@@ -42,19 +42,19 @@ void mouseDown(GLFWwindow* pWin, int button, int action, int mods)
     g_app.mouseDown(button, action, x, y);
 }
 
-void mouseMove(int x, int y)
+void mouseMove(GLFWwindow* window, double x, double y)
 {
     //int x,y;
     //glfwGetMousePos(&x, &y);
     g_app.mouseMove(x, y);
 }
 
-void keyboard(int key, int action)
+void keyboard(GLFWwindow* window, int key, int action, int, int)
 {
     g_app.keyboard(key, 0,0);
 }
 
-void resize(int w, int h)
+void resize(GLFWwindow* window, int w, int h)
 {
     g_app.resize(w,h);
     TwWindowSize(w,h);
@@ -80,7 +80,12 @@ bool initGlfw(int argc, char **argv)
     }
     glfwMakeContextCurrent(g_pWindow);
 
+    glfwSetWindowSizeCallback (g_pWindow, resize);
     glfwSetMouseButtonCallback(g_pWindow, mouseDown);
+    glfwSetCursorPosCallback  (g_pWindow, mouseMove);
+    //glfwSetMouseWheelCallback (g_pWindow, mouseWheel);
+    glfwSetKeyCallback        (g_pWindow, keyboard);
+    //glfwSetCharCallback       (g_pWindow, charkey);
 
     ///@note Bad size errors will be thrown if this is not called at init
     TwWindowSize(w, h);
