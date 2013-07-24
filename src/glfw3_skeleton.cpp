@@ -22,9 +22,9 @@
 #include "utils/Logger.h"
 #include "paramgl.h"
 
-#include "GlutAppSkeleton.h"
+#include "AntAppSkeleton.h"
 
-TriAppSkeleton g_app;
+AntAppSkeleton g_app;
 
 int running = 0;
 GLFWwindow* g_pWindow;
@@ -57,6 +57,7 @@ void keyboard(int key, int action)
 void resize(int w, int h)
 {
     g_app.resize(w,h);
+    TwWindowSize(w,h);
 }
 
 bool initGL(int argc, char **argv)
@@ -66,12 +67,12 @@ bool initGL(int argc, char **argv)
 
 bool initGlfw(int argc, char **argv)
 {
-    /* Initialize the library */
     if (!glfwInit())
         return -1;
 
-    /* Create a windowed mode window and its OpenGL context */
-    g_pWindow = glfwCreateWindow(640, 480, "GLSkeleton - GLFW 3", NULL, NULL);
+    const int w = 640;
+    const int h = 480;
+    g_pWindow = glfwCreateWindow(w, h, "GLSkeleton - GLFW 3", NULL, NULL);
     if (!g_pWindow)
     {
         glfwTerminate();
@@ -80,6 +81,9 @@ bool initGlfw(int argc, char **argv)
     glfwMakeContextCurrent(g_pWindow);
 
     glfwSetMouseButtonCallback(g_pWindow, mouseDown);
+
+    ///@note Bad size errors will be thrown if this is not called at init
+    TwWindowSize(w, h);
 
     return 1;
 }
@@ -156,7 +160,7 @@ int main(int argc, char *argv[])
         return 0;
     if (!initGL(argc, argv))
         return 0;
-    
+
     PrintMonitorInfo();
 
     LOG_INFO("Starting main loop.");
@@ -172,7 +176,8 @@ int main(int argc, char *argv[])
         //running = running && glfwGetWindowParam(GLFW_OPENED);
         glfwPollEvents();
     }
-
+    
+    TwTerminate();
     glfwTerminate();
     return 0;
 }

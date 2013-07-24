@@ -8,7 +8,7 @@
 #  include <windows.h>
 #endif
 #include <stdlib.h>
-//#include <GL/GL.h>
+#include <GL/glew.h>
 
 #ifdef USE_CUDA
 #else

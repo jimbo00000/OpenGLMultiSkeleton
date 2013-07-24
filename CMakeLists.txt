@@ -42,10 +42,15 @@ IF( WIN32 )
     INCLUDE_DIRECTORIES( "${GLEW_ROOT}/include" )
     LINK_DIRECTORIES   ( "${GLEW_ROOT}/lib" )
     #ADD_DEFINITIONS( -DGLEW_STATIC )
-	
-	SET( CINDER_ROOT "${GL_LIBS_HOME}/cinder_0.8.5_vc2010" )
-	INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
-	LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
+
+    SET( CINDER_ROOT "${GL_LIBS_HOME}/cinder_0.8.5_vc2010" )
+    INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
+    LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
+
+    SET( ANTTWEAKBAR_ROOT "${GL_LIBS_HOME}/AntTweakBar_116/AntTweakBar" )
+    INCLUDE_DIRECTORIES( "${ANTTWEAKBAR_ROOT}/include" )
+    LINK_DIRECTORIES   ( "${ANTTWEAKBAR_ROOT}/lib" )
+
 
     #
     # Framework and platform-dependent lib section
@@ -81,7 +86,9 @@ IF( WIN32 )
     SET( PLATFORM_LIBS
         ${FRAMEWORK_LIBS}
         opengl32
-        glew32.lib )
+        glew32.lib
+        AntTweakBar.lib
+        )
 
     IF( GL_FRAMEWORK STREQUAL "PEZ" )
         SET( SKELETON_FILE "pez_windows_skeleton.cpp" )
