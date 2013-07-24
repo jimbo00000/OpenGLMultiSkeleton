@@ -4,6 +4,10 @@
 
 AppSkeleton g_app;
 
+//This #ifdef was helping in linking this code in from the Objective C PEZ wrapper
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 ///
 /// User-defined skeleton callbacks below.
@@ -30,3 +34,6 @@ void PezHandleMouse(int x, int y, int action)
     //else if (action == PEZ_UP)
     //    pressing = 0;
 }
+#ifdef __cplusplus
+}
+#endif

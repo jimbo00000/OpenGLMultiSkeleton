@@ -89,12 +89,42 @@ IF( WIN32 )
 ELSEIF( APPLE )
     INCLUDE_DIRECTORIES ( /System/Library/Frameworks )
     FIND_LIBRARY(COCOA_LIBRARY Cocoa)
+    FIND_LIBRARY(IOKIT_LIBRARY IOKit)
     FIND_LIBRARY(GLUT_LIBRARY GLUT )
     FIND_LIBRARY(OpenGL_LIBRARY OpenGL )
     MARK_AS_ADVANCED (COCOA_LIBRARY
                       GLUT_LIBRARY
+                      IOKIT_LIBRARY
                       OpenGL_LIBRARY)
-    SET(PLATFORM_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY})
+    
+    INCLUDE_DIRECTORIES( "/opt/local/include" )
+    LINK_DIRECTORIES   ( "/opt/local/lib" )
+
+    IF( GL_FRAMEWORK STREQUAL "SDL" )
+        SET( FRAMEWORK_LIBS SDL )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW" )
+        SET( FRAMEWORK_LIBS glfw )
+    ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
+        SET( FRAMEWORK_LIBS glfw3 )
+    ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
+        #SET( CONSOLE_SYSTEM WIN32 )
+    ENDIF()
+
+    # Update this to your GLFW installation location
+    SET( GLFW_ROOT "~/Development/glfw-2.7.7/")
+    INCLUDE_DIRECTORIES( "${GLFW_ROOT}/include" )
+    LINK_DIRECTORIES   ( "${GLFW_ROOT}/lib" )
+
+    SET( GLFW3_ROOT "~/Development/glfw-3.0.1/")
+    INCLUDE_DIRECTORIES( "${GLFW3_ROOT}/include" )
+    LINK_DIRECTORIES   ( "${GLFW3_ROOT}/lib" )
+
+    SET(PLATFORM_LIBS ${FRAMEWORK_LIBS} ${COCOA_LIBRARY} ${IOKIT_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY} -lGLEW)
+
+    IF( GL_FRAMEWORK STREQUAL "PEZ" )
+        SET( SKELETON_FILE "pez.cocoa.mm" "src/pez_app_skeleton.cpp")
+    ENDIF()
+
 ELSEIF( UNIX )
     FIND_PACKAGE( OpenGL REQUIRED )
     FIND_PACKAGE( GLUT REQUIRED )
