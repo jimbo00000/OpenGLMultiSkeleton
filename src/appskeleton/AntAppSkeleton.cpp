@@ -15,12 +15,12 @@ AntAppSkeleton::~AntAppSkeleton()
 
 void AntAppSkeleton::_InitializeBar()
 {
-    double time = 0, dt;// Current time and enlapsed time
-    double turn = 0;    // Model turn counter
-    double speed = 0.3; // Model rotation speed
-    int wire = 0;       // Draw model in wireframe?
-    float bgColor[] = { 0.1f, 0.2f, 0.4f };         // Background color 
-    unsigned char cubeColor[] = { 255, 0, 0, 128 }; // Model color (32bits RGBA)
+    //double time = 0, dt;// Current time and enlapsed time
+    //double turn = 0;    // Model turn counter
+    speed = 0.3; // Model rotation speed
+    //int wire = 0;       // Draw model in wireframe?
+    //float bgColor[] = { 0.1f, 0.2f, 0.4f };         // Background color 
+    //unsigned char cubeColor[] = { 255, 0, 0, 128 }; // Model color (32bits RGBA)
 
     // Create a tweak bar
     m_bar = TwNewBar("TweakBar");
@@ -30,6 +30,7 @@ void AntAppSkeleton::_InitializeBar()
     TwAddVarRW(m_bar, "speed", TW_TYPE_DOUBLE, &speed, 
                " label='Rot speed' min=0 max=2 step=0.01 keyIncr=s keyDecr=S help='Rotation speed (turns/second)' ");
 
+#if 0
     // Add 'wire' to 'bar': it is a modifable variable of type TW_TYPE_BOOL32 (32 bits boolean). Its key shortcut is [w].
     TwAddVarRW(m_bar, "wire", TW_TYPE_BOOL32, &wire, 
                " label='Wireframe mode' key=w help='Toggle wireframe display mode.' ");
@@ -43,6 +44,8 @@ void AntAppSkeleton::_InitializeBar()
     // Add 'cubeColor' to 'bar': it is a modifable variable of type TW_TYPE_COLOR32 (32 bits color) with alpha
     TwAddVarRW(m_bar, "cubeColor", TW_TYPE_COLOR32, &cubeColor, 
                " label='Cube color' alpha help='Color and transparency of the cube.' ");
+#endif
+
 }
 
 bool AntAppSkeleton::initGL(int argc, char **argv)

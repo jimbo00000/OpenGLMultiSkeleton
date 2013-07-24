@@ -39,6 +39,8 @@ protected:
     void _InitializeBar();
     TwBar* m_bar;
 
+    double speed;
+
 private: // Disallow copy ctor and assignment operator
     AntAppSkeleton(const AntAppSkeleton&);
     AntAppSkeleton& operator=(const AntAppSkeleton&);
