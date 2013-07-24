@@ -47,7 +47,7 @@ bool init()
     if (SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_OPENGL) == NULL)
         return false;
 
-    SDL_WM_SetCaption( "SDL Skeleton", NULL );
+    SDL_WM_SetCaption( "GL Skeleton - SDL", NULL );
 
     return true;
 }

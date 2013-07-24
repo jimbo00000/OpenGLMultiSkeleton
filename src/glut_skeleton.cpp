@@ -64,7 +64,7 @@ bool initGlut(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(g_app.w(), g_app.h());
-    glutCreateWindow("glut - OpenGL 2.0");
+    glutCreateWindow("GL Skeleton - GLUT");
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouseDown);

@@ -78,7 +78,7 @@ bool initGlfw(int argc, char **argv)
         return 0;
     }
 
-    glfwSetWindowTitle        ("GLFW Skeleton");
+    glfwSetWindowTitle        ("GL Skeleton - GLFW 2");
     glfwSetMouseButtonCallback(mouseDown);
     glfwSetMousePosCallback   (mouseMove);
     glfwSetKeyCallback        (keyboard);

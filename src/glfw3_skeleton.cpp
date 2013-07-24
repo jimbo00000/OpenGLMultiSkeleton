@@ -71,7 +71,7 @@ bool initGlfw(int argc, char **argv)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    g_pWindow = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    g_pWindow = glfwCreateWindow(640, 480, "GLSkeleton - GLFW 3", NULL, NULL);
     if (!g_pWindow)
     {
         glfwTerminate();
