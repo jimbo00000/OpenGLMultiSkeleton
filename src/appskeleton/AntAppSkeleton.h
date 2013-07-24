@@ -30,7 +30,9 @@ public:
     virtual void display() const;
     virtual void mouseDown(int button, int state, int x, int y);
     virtual void mouseMove(int x, int y);
+    virtual void mouseWheel(int x, int y);
     virtual void keyboard(int key, int x, int y);
+    virtual void charkey(unsigned int key);
     virtual bool initGL(int argc, char **argv);
 
 protected:

@@ -68,7 +68,17 @@ void AntAppSkeleton::mouseMove(int x, int y)
     TwEventMousePosGLFW(x, y);
 }
 
+void AntAppSkeleton::mouseWheel(int x, int y)
+{
+    TwEventMouseWheelGLFW(x);
+}
+
 void AntAppSkeleton::keyboard(int key, int x, int y)
 {
     TwEventKeyGLFW(key, 0);
+}
+
+void AntAppSkeleton::charkey(unsigned int key)
+{
+    TwEventCharGLFW(key, 0);
 }
