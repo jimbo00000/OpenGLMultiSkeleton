@@ -42,25 +42,36 @@ void AntAppSkeleton::display() const
 
 void AntAppSkeleton::mouseDown(int button, int state, int x, int y)
 {
-    TwEventMouseButtonGLFW(button, state);
+    int ant = TwEventMouseButtonGLFW(button, state);
+    if (ant != 0)
+        return;
+    TriAppSkeleton::mouseDown(button, state, x, y);
 }
 
 void AntAppSkeleton::mouseMove(int x, int y)
 {
     TwEventMousePosGLFW(x, y);
+    TriAppSkeleton::mouseMove(x, y);
 }
 
 void AntAppSkeleton::mouseWheel(int x, int y)
 {
     TwEventMouseWheelGLFW(x);
+    //TriAppSkeleton::mouseWheel(x, y);
 }
 
 void AntAppSkeleton::keyboard(int key, int x, int y)
 {
-    TwEventKeyGLFW(key, 0);
+    int ant = TwEventKeyGLFW(key, 0);
+    if (ant != 0)
+        return;
+    TriAppSkeleton::keyboard(key, x, y);
 }
 
 void AntAppSkeleton::charkey(unsigned int key)
 {
-    TwEventCharGLFW(key, 0);
+    int ant = TwEventCharGLFW(key, 0);
+    if (ant != 0)
+        return;
+    TriAppSkeleton::keyboard(key, 0, 0);
 }
