@@ -20,6 +20,7 @@
 
 TriAppSkeleton::TriAppSkeleton()
 : AppSkeleton()
+, which_button(-1)
 {
     g_cameraLocation = make_float3(0.0f, -3.0f, 0.0f);
     g_lookVector     = make_float3(0.0f,  1.0f, 0.0f);
@@ -118,7 +119,7 @@ void TriAppSkeleton::mouseDown(int button, int state, int x, int y)
     oldy = newy = y;
     if (state == 0) // 0 == GLFW_RELEASE
     {
-        which_button = 0;
+        which_button = -1;
     }
 }
 
@@ -136,7 +137,7 @@ void TriAppSkeleton::mouseMove(int x, int y)
     mmx = x-oldx;
     mmy = y-oldy;
 
-    if (which_button == GLUT_LEFT_BUTTON)
+    if (which_button == GLUT_LEFT_BUTTON) //GLFW_MOUSE_BUTTON_1
     {
         g_rotation.x += (float)mmx/thresh;
         g_rotation.y += (float)mmy/thresh;
