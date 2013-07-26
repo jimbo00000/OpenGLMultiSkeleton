@@ -10,6 +10,7 @@
 
 #include <GL/glew.h>
 #include <GL/glfw.h>
+#include <AntTweakBar.h>
 
 #ifdef USE_CUDA
 #else
@@ -21,9 +22,9 @@
 #include "utils/Logger.h"
 #include "paramgl.h"
 
-#include "GlutAppSkeleton.h"
+#include "AntAppSkeleton.h"
 
-TriAppSkeleton g_app;
+AntAppSkeleton g_app;
 
 int running = 0;
 
@@ -56,6 +57,7 @@ void GLFWCALL keyboard(int key, int action)
 void resize(int w, int h)
 {
     g_app.resize(w,h);
+    TwWindowSize(w,h);
 }
 
 bool initGL(int argc, char **argv)
@@ -92,6 +94,8 @@ bool initGlfw(int argc, char **argv)
         LOG_INFO("Error: %s\n", glewGetErrorString(err));
     }
     LOG_INFO("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+
+    TwWindowSize(g_app.w(), g_app.h());
 
     return true;
 }

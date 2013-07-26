@@ -35,6 +35,7 @@ public:
     virtual bool initGL(int argc, char **argv);
 
 
+    float3  g_rotation;
 protected:
     virtual void _InitShaders();
     virtual void drawObject() const;
@@ -42,7 +43,6 @@ protected:
     float3  g_cameraLocation;
     float3  g_lookVector;
     float3  g_upVector;
-    float3  g_rotation;
     GLfloat g_distance;
 
     double g_viewAngle;
