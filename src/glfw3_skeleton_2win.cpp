@@ -242,6 +242,7 @@ bool initGlfw(int argc, char **argv)
             exit(EXIT_FAILURE);
         }
         glfwMakeContextCurrent(g_pWindow2);
+        glfwSetWindowPos(g_pWindow2, 1920, 0);
         glfwShowWindow(g_pWindow2);
     }
 
