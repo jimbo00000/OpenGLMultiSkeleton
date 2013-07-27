@@ -111,6 +111,28 @@ bool initGL(int argc, char **argv)
 }
 
 
+void FindOculusMonitor()
+{
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors(&count);
+    for (int i=0; i<count; ++i)
+    {
+        GLFWmonitor* pMonitor = monitors[i];
+        if (pMonitor == NULL)
+            continue;
+        const GLFWvidmode* mode = glfwGetVideoMode(pMonitor);
+        /// Take a guess at which is the Oculus - 1280x800 is pretty distinctive
+        if (
+            (mode->width  == 1280) &&
+            (mode->height == 800)
+            )
+        {
+            g_pOculusMonitor = pMonitor;
+        }
+    }
+}
+
+
 /// Dump a list of monitor info to Log and stdout.
 /// http://www.glfw.org/docs/3.0/monitor.html
 void PrintMonitorInfo()
@@ -156,15 +178,6 @@ void PrintMonitorInfo()
                 mode->greenBits, 
                 mode->blueBits);
 
-        /// Take a guess at which is the Oculus - 1280x800 is pretty distinctive
-        if (
-            (mode->width  == 1280) &&
-            (mode->height == 800)
-            )
-        {
-            //g_pOculusMonitor = pMonitor;
-        }
-
 #if 0
         int modeCount;
         const GLFWvidmode* modes = glfwGetVideoModes(pMonitor, &modeCount);
@@ -195,6 +208,7 @@ bool initGlfw(int argc, char **argv)
         return -1;
 
     PrintMonitorInfo();
+    //FindOculusMonitor();
 
     /// Init Control window containing AntTweakBar
     {
