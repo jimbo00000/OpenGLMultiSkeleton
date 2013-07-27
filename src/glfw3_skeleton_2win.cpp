@@ -54,36 +54,55 @@ void display()
 void mouseDown(GLFWwindow* pWin, int button, int action, int mods)
 {
     double x,y;
-    glfwGetCursorPos(g_pWindow, &x, &y);
-    g_app.mouseDown(button, action, x, y);
+    glfwGetCursorPos(pWin, &x, &y);
+
+    if (pWin == g_pWindow)
+    {
+        g_app.mouseDown(button, action, x, y);
+    }
 }
 
-void mouseMove(GLFWwindow* window, double x, double y)
+void mouseMove(GLFWwindow* pWin, double x, double y)
 {
     //int x,y;
     //glfwGetMousePos(&x, &y);
-    g_app.mouseMove(x, y);
+    if (pWin == g_pWindow)
+    {
+        g_app.mouseMove(x, y);
+    }
 }
 
-void mouseWheel(GLFWwindow* window, double x, double y)
+void mouseWheel(GLFWwindow* pWin, double x, double y)
 {
-    g_app.mouseWheel(x, y);
+    if (pWin == g_pWindow)
+    {
+        g_app.mouseWheel(x, y);
+    }
 }
 
-void keyboard(GLFWwindow* window, int key, int action, int, int)
+void keyboard(GLFWwindow* pWin, int key, int action, int, int)
 {
-    g_app.keyboard(key, 0,0);
+    if (pWin == g_pWindow)
+    {
+        g_app.keyboard(key, 0,0);
+    }
 }
 
-void charkey(GLFWwindow* window, unsigned int key)
+void charkey(GLFWwindow* pWin, unsigned int key)
 {
-    g_app.charkey(key);
+    if (pWin == g_pWindow)
+    {
+        g_app.charkey(key);
+    }
 }
 
-void resize(GLFWwindow* window, int w, int h)
+void resize(GLFWwindow* pWin, int w, int h)
 {
-    g_app.resize(w,h);
-    TwWindowSize(w,h);
+    if (pWin == g_pWindow)
+    {
+        g_app.resize(w,h);
+        TwWindowSize(w,h);
+    }
 }
 
 bool initGL(int argc, char **argv)
@@ -143,7 +162,7 @@ void PrintMonitorInfo()
             (mode->height == 800)
             )
         {
-            g_pOculusMonitor = pMonitor;
+            //g_pOculusMonitor = pMonitor;
         }
 
 #if 0
@@ -162,6 +181,7 @@ void PrintMonitorInfo()
 #endif
     }
 }
+
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
@@ -175,8 +195,6 @@ bool initGlfw(int argc, char **argv)
         return -1;
 
     PrintMonitorInfo();
-
-    //glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 
     /// Init Control window containing AntTweakBar
     {
@@ -203,20 +221,18 @@ bool initGlfw(int argc, char **argv)
 
     /// Init secondary window
     {
-        g_pWindow2 = glfwCreateWindow(1280, 800, "Second window", g_pOculusMonitor, NULL);
+        g_pWindow2 = glfwCreateWindow(1280, 800, "Second window", g_pOculusMonitor, g_pWindow);
         if (!g_pWindow2)
         {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
-
         glfwMakeContextCurrent(g_pWindow2);
-
-        //glfwSetWindowPos(g_pWindow2, 100 + (i & 1) * 300, 100 + (i >> 1) * 300);
         glfwShowWindow(g_pWindow2);
     }
 
-    glfwMakeContextCurrent(g_pWindow);
+    /// If we are not sharing contexts between windows, make the appropriate one current here.
+    //glfwMakeContextCurrent(g_pWindow);
 
     return 1;
 }
