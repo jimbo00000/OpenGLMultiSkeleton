@@ -29,6 +29,7 @@ AntAppSkeleton g_app;
 int running = 0;
 GLFWwindow* g_pWindow = NULL;
 GLFWwindow* g_pWindow2 = NULL;
+GLFWmonitor* g_pOculusMonitor = NULL;
 
 void display()
 {
@@ -90,63 +91,6 @@ bool initGL(int argc, char **argv)
     return g_app.initGL(argc, argv);
 }
 
-static void error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Error: %s\n", description);
-}
-
-bool initGlfw(int argc, char **argv)
-{
-    glfwSetErrorCallback(error_callback);
-
-    if (!glfwInit())
-        return -1;
-
-    //glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-
-    /// Init Control window containing AntTweakBar
-    {
-        const int w = 640;
-        const int h = 480;
-        g_pWindow = glfwCreateWindow(w, h, "GLSkeleton - GLFW 3", NULL, NULL);
-        if (!g_pWindow)
-        {
-            glfwTerminate();
-            return -1;
-        }
-        glfwMakeContextCurrent(g_pWindow);
-
-        glfwSetWindowSizeCallback (g_pWindow, resize);
-        glfwSetMouseButtonCallback(g_pWindow, mouseDown);
-        glfwSetCursorPosCallback  (g_pWindow, mouseMove);
-        glfwSetScrollCallback     (g_pWindow, mouseWheel);
-        glfwSetKeyCallback        (g_pWindow, keyboard);
-        glfwSetCharCallback       (g_pWindow, charkey);
-
-        ///@note Bad size errors will be thrown if this is not called at init
-        TwWindowSize(w, h);
-    }
-
-    /// Init secondary window
-    {
-        g_pWindow2 = glfwCreateWindow(200, 200, "Second window", NULL, NULL);
-        if (!g_pWindow2)
-        {
-            glfwTerminate();
-            exit(EXIT_FAILURE);
-        }
-
-        glfwMakeContextCurrent(g_pWindow2);
-
-        //glfwSetWindowPos(g_pWindow2, 100 + (i & 1) * 300, 100 + (i >> 1) * 300);
-        glfwShowWindow(g_pWindow2);
-    }
-
-    glfwMakeContextCurrent(g_pWindow);
-
-    return 1;
-}
-
 
 /// Dump a list of monitor info to Log and stdout.
 /// http://www.glfw.org/docs/3.0/monitor.html
@@ -193,6 +137,15 @@ void PrintMonitorInfo()
                 mode->greenBits, 
                 mode->blueBits);
 
+        /// Take a guess at which is the Oculus - 1280x800 is pretty distinctive
+        if (
+            (mode->width  == 1280) &&
+            (mode->height == 800)
+            )
+        {
+            g_pOculusMonitor = pMonitor;
+        }
+
 #if 0
         int modeCount;
         const GLFWvidmode* modes = glfwGetVideoModes(pMonitor, &modeCount);
@@ -209,6 +162,65 @@ void PrintMonitorInfo()
 #endif
     }
 }
+static void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Error: %s\n", description);
+}
+
+bool initGlfw(int argc, char **argv)
+{
+    glfwSetErrorCallback(error_callback);
+
+    if (!glfwInit())
+        return -1;
+
+    PrintMonitorInfo();
+
+    //glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+
+    /// Init Control window containing AntTweakBar
+    {
+        const int w = 640;
+        const int h = 480;
+        g_pWindow = glfwCreateWindow(w, h, "GLSkeleton - GLFW 3", NULL, NULL);
+        if (!g_pWindow)
+        {
+            glfwTerminate();
+            return -1;
+        }
+        glfwMakeContextCurrent(g_pWindow);
+
+        glfwSetWindowSizeCallback (g_pWindow, resize);
+        glfwSetMouseButtonCallback(g_pWindow, mouseDown);
+        glfwSetCursorPosCallback  (g_pWindow, mouseMove);
+        glfwSetScrollCallback     (g_pWindow, mouseWheel);
+        glfwSetKeyCallback        (g_pWindow, keyboard);
+        glfwSetCharCallback       (g_pWindow, charkey);
+
+        ///@note Bad size errors will be thrown if this is not called at init
+        TwWindowSize(w, h);
+    }
+
+    /// Init secondary window
+    {
+        g_pWindow2 = glfwCreateWindow(1280, 800, "Second window", g_pOculusMonitor, NULL);
+        if (!g_pWindow2)
+        {
+            glfwTerminate();
+            exit(EXIT_FAILURE);
+        }
+
+        glfwMakeContextCurrent(g_pWindow2);
+
+        //glfwSetWindowPos(g_pWindow2, 100 + (i & 1) * 300, 100 + (i >> 1) * 300);
+        glfwShowWindow(g_pWindow2);
+    }
+
+    glfwMakeContextCurrent(g_pWindow);
+
+    return 1;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Program main
@@ -219,8 +231,6 @@ int main(int argc, char *argv[])
         return 0;
     if (!initGL(argc, argv))
         return 0;
-
-    PrintMonitorInfo();
 
     LOG_INFO("Starting main loop.");
 
