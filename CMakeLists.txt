@@ -10,7 +10,7 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 # Choose from the following frameworks here:
 # GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 #
-SET( GL_FRAMEWORK "GLFW2" )
+SET( GL_FRAMEWORK "GLFW3" )
 
 SET( USE_ANTTWEAKBAR TRUE )
 
@@ -196,7 +196,8 @@ IF( GL_FRAMEWORK STREQUAL "SDL" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
     SET( SKELETON_FILE "glfw2_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
-    SET( SKELETON_FILE "glfw3_skeleton.cpp" )
+    #SET( SKELETON_FILE "glfw3_skeleton.cpp" )
+    SET( SKELETON_FILE "glfw3_skeleton_2win.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
     SET( SKELETON_FILE "cinder_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLUT" )
