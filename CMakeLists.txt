@@ -8,10 +8,12 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 
 #
 # Choose from the following frameworks here:
-
 # GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 #
 SET( GL_FRAMEWORK "GLFW2" )
+
+SET( USE_ANTTWEAKBAR TRUE )
+
 #
 # Platform-dependent section: Windows, Linux, MacOS
 #
@@ -47,9 +49,13 @@ IF( WIN32 )
     INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
     LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
 
-    SET( ANTTWEAKBAR_ROOT "${GL_LIBS_HOME}/AntTweakBar_116/AntTweakBar" )
-    INCLUDE_DIRECTORIES( "${ANTTWEAKBAR_ROOT}/include" )
-    LINK_DIRECTORIES   ( "${ANTTWEAKBAR_ROOT}/lib" )
+    IF( USE_ANTTWEAKBAR )
+        SET( ANTTWEAKBAR_ROOT "${GL_LIBS_HOME}/AntTweakBar_116/AntTweakBar" )
+        INCLUDE_DIRECTORIES( "${ANTTWEAKBAR_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${ANTTWEAKBAR_ROOT}/lib" )
+        SET( ANT_LIBS AntTweakBar.lib )
+        ADD_DEFINITIONS( -DUSE_ANTTWEAKBAR )
+    ENDIF( USE_ANTTWEAKBAR )
 
 
     #
@@ -87,7 +93,7 @@ IF( WIN32 )
         ${FRAMEWORK_LIBS}
         opengl32
         glew32.lib
-        AntTweakBar.lib
+        ${ANT_LIBS}
         )
 
     IF( GL_FRAMEWORK STREQUAL "PEZ" )

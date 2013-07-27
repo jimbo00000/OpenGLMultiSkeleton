@@ -17,7 +17,9 @@
 
 #include "TriAppSkeleton.h"
 
-#include <AntTweakBar.h>
+#ifdef USE_ANTTWEAKBAR
+#  include <AntTweakBar.h>
+#endif
 
 class ParamListGL;
 
@@ -36,10 +38,12 @@ public:
     virtual bool initGL(int argc, char **argv);
 
 protected:
+
+#ifdef USE_ANTTWEAKBAR
     void _InitializeBar();
     TwBar* m_bar;
-
     double speed;
+#endif
 
 private: // Disallow copy ctor and assignment operator
     AntAppSkeleton(const AntAppSkeleton&);

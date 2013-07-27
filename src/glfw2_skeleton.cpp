@@ -10,7 +10,10 @@
 
 #include <GL/glew.h>
 #include <GL/glfw.h>
-#include <AntTweakBar.h>
+
+#ifdef USE_ANTTWEAKBAR
+#  include <AntTweakBar.h>
+#endif
 
 #ifdef USE_CUDA
 #else
@@ -57,7 +60,10 @@ void GLFWCALL keyboard(int key, int action)
 void resize(int w, int h)
 {
     g_app.resize(w,h);
+
+#ifdef USE_ANTTWEAKBAR
     TwWindowSize(w,h);
+#endif
 }
 
 bool initGL(int argc, char **argv)
@@ -94,8 +100,10 @@ bool initGlfw(int argc, char **argv)
         LOG_INFO("Error: %s\n", glewGetErrorString(err));
     }
     LOG_INFO("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
-
+    
+#ifdef USE_ANTTWEAKBAR
     TwWindowSize(g_app.w(), g_app.h());
+#endif
 
     return true;
 }
