@@ -29,6 +29,8 @@ AntAppSkeleton g_app;
 int running = 0;
 GLFWwindow* g_pWindow = NULL;
 GLFWwindow* g_pWindow2 = NULL;
+
+GLFWmonitor* g_pPrimaryMonitor = NULL;
 GLFWmonitor* g_pOculusMonitor = NULL;
 
 void display()
@@ -119,7 +121,9 @@ bool initGL(int argc, char **argv)
 }
 
 
-void FindOculusMonitor()
+///@brief Attempt to determine which of the connected monitors is the Oculus Rift and which
+/// are not. The only heuristic available for this purpose is resolution.
+void IdentifyMonitors()
 {
     int count;
     GLFWmonitor** monitors = glfwGetMonitors(&count);
@@ -129,6 +133,7 @@ void FindOculusMonitor()
         if (pMonitor == NULL)
             continue;
         const GLFWvidmode* mode = glfwGetVideoMode(pMonitor);
+
         /// Take a guess at which is the Oculus - 1280x800 is pretty distinctive
         if (
             (mode->width  == 1280) &&
@@ -136,6 +141,13 @@ void FindOculusMonitor()
             )
         {
             g_pOculusMonitor = pMonitor;
+        }
+        else if (g_pPrimaryMonitor == NULL)
+        {
+            /// Guess that the first (probably)non-Oculus monitor is primary.
+            ///@note The multi-monitor setup requires the two screens to be aligned along their top edge
+            /// with the Oculus monitor to the right of the primary.
+            g_pPrimaryMonitor = pMonitor;
         }
     }
 }
@@ -216,7 +228,7 @@ bool initGlfw(int argc, char **argv)
         return -1;
 
     PrintMonitorInfo();
-    //FindOculusMonitor();
+    IdentifyMonitors();
 
     /// Init Control window containing AntTweakBar
     {
@@ -243,14 +255,32 @@ bool initGlfw(int argc, char **argv)
 
     /// Init secondary window
     {
-        g_pWindow2 = glfwCreateWindow(1280, 800, "Second window", g_pOculusMonitor, g_pWindow);
+        g_pWindow2 = glfwCreateWindow(
+            1280, 800,
+            "Oculus window",
+            ///@note Fullscreen windows cannot be positioned. The fullscreen window over the Oculus
+            /// monitor would be the preferred solution, but on Windows that fullscreen window will disappear
+            /// on the first mouse input occuring outside of it, defeating the purpose of the first window.
+            NULL, //g_pOculusMonitor,
+            g_pWindow);
+
         if (!g_pWindow2)
         {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
         glfwMakeContextCurrent(g_pWindow2);
-        glfwSetWindowPos(g_pWindow2, 1920, 0);
+
+        /// Position Oculus secondary monitor pseudo-fullscreen window
+        if (g_pPrimaryMonitor != NULL)
+        {
+            const GLFWvidmode* pMode = glfwGetVideoMode(g_pPrimaryMonitor);
+            if (pMode != NULL)
+            {
+                glfwSetWindowPos(g_pWindow2, pMode->width, 0);
+            }
+        }
+
         glfwShowWindow(g_pWindow2);
     }
 
