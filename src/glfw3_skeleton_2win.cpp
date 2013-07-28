@@ -86,6 +86,14 @@ void keyboard(GLFWwindow* pWin, int key, int action, int, int)
     {
         g_app.keyboard(key, 0,0);
     }
+
+    /// Exit the app on Escape press
+    switch (key)
+    {
+    case GLFW_KEY_ESCAPE:
+        running = GL_FALSE;
+        break;
+    }
 }
 
 void charkey(GLFWwindow* pWin, unsigned int key)
