@@ -67,7 +67,9 @@ void charkey(GLFWwindow* window, unsigned int key)
 void resize(GLFWwindow* window, int w, int h)
 {
     g_app.resize(w,h);
+#ifdef USE_ANTTWEAKBAR
     TwWindowSize(w,h);
+#endif
 }
 
 bool initGL(int argc, char **argv)
@@ -97,8 +99,10 @@ bool initGlfw(int argc, char **argv)
     glfwSetKeyCallback        (g_pWindow, keyboard);
     glfwSetCharCallback       (g_pWindow, charkey);
 
+#ifdef USE_ANTTWEAKBAR
     ///@note Bad size errors will be thrown if this is not called at init
     TwWindowSize(w, h);
+#endif
 
     return 1;
 }
@@ -191,8 +195,10 @@ int main(int argc, char *argv[])
         //running = running && glfwGetWindowParam(GLFW_OPENED);
         glfwPollEvents();
     }
-    
+
+#ifdef USE_ANTTWEAKBAR
     TwTerminate();
+#endif
     glfwTerminate();
     return 0;
 }
