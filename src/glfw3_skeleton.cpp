@@ -28,6 +28,10 @@ AntAppSkeleton g_app;
 
 int running = 0;
 GLFWwindow* g_pWindow;
+int g_windowLastWidth = 0;
+int g_windowLastHeight = 0;
+int g_windowLastPosX = -1;
+int g_windowLastPosY = -1;
 
 void display()
 {
@@ -54,9 +58,54 @@ void mouseWheel(GLFWwindow* window, double x, double y)
     g_app.mouseWheel(x, y);
 }
 
-void keyboard(GLFWwindow* window, int key, int action, int, int)
+void toggleFullscreen()
 {
-    g_app.keyboard(key, 0,0);
+    int winw=0, winh = 0;
+    int winx=0, winy = 0;
+    glfwGetWindowSize (g_pWindow, &winw, &winh);
+    glfwGetWindowPos  (g_pWindow, &winx, &winy);
+
+    if ((g_windowLastWidth == 0) &&
+        (g_windowLastHeight == 0)
+        )
+    {
+        g_windowLastWidth = winw;
+        g_windowLastHeight = winh;
+        g_windowLastPosX = winx;
+        g_windowLastPosY = winy;
+        glfwSetWindowPos (g_pWindow, 0, 0);
+        glfwSetWindowSize(g_pWindow, 1920, 1080);
+    }
+    else
+    {
+        glfwSetWindowPos (g_pWindow, g_windowLastPosX, g_windowLastPosY);
+        glfwSetWindowSize(g_pWindow, g_windowLastWidth, g_windowLastHeight);
+        g_windowLastWidth = 0;
+        g_windowLastHeight = 0;
+        g_windowLastPosX = -1;
+        g_windowLastPosY = -1;
+    }
+}
+
+void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    switch (key)
+    {
+    default:
+        g_app.keyboard(key, 0,0);
+        break;
+
+    case GLFW_KEY_ESCAPE:
+        exit(0);
+        break;
+
+    case GLFW_KEY_ENTER:
+        if ((action == GLFW_PRESS) && (mods & GLFW_MOD_ALT))
+        {
+            toggleFullscreen();
+        }
+        break;
+    }
 }
 
 void charkey(GLFWwindow* window, unsigned int key)

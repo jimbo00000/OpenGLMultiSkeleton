@@ -47,11 +47,6 @@ void AppSkeleton::keyboard(int key, int x, int y)
 {
     switch (key)
     {
-    case 257: // Escape in GLFW
-    case 27: //Esc
-        exit(0);
-        break;
-
     default:
         LOG_INFO("key: %d %c\n", key , key );
         printf("key: %d %c\n", key , key);
@@ -61,6 +56,7 @@ void AppSkeleton::keyboard(int key, int x, int y)
 
 void AppSkeleton::resize(int w, int h)
 {
+    glViewport(0,0, (GLsizei)w, (GLsizei)h);
 }
 
 /// Glew should be the first thing we initialize. After that, all initialization of GL state.
