@@ -12,7 +12,7 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 #
 SET( GL_FRAMEWORK "GLFW3" )
 
-SET( USE_ANTTWEAKBAR TRUE )
+SET( USE_ANTTWEAKBAR TRUE CACHE BOOL "Use OpenMP" )
 
 #
 # Platform-dependent section: Windows, Linux, MacOS
@@ -22,7 +22,7 @@ IF( WIN32 )
     # Set this hard-coded directory path to wherever the
     # glut and glew directories reside locally.
     #
-    SET( GL_LIBS_HOME "C:/lib" )
+    SET( GL_LIBS_HOME "C:/lib" CACHE PATH "Location of support libraries" )
 
     SET( GLUT_ROOT "${GL_LIBS_HOME}/glut-3.7.6-bin" )
     INCLUDE_DIRECTORIES( "${GLUT_ROOT}" )
@@ -67,24 +67,24 @@ IF( WIN32 )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
         SET( FRAMEWORK_LIBS glfw.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
-		SET( FRAMEWORK_LIBS glfw3.lib )
-	ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
-		#
-		#	Force static runtime linking and ignore libcmt.lib in MSVC for cinder
-		#
-		IF( MSVC )
-			foreach(flag_var
-				CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-				CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-				if(${flag_var} MATCHES "/MD")
-					string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-				endif(${flag_var} MATCHES "/MD")
-			endforeach(flag_var)
-			
-			SET(CMAKE_EXE_LINKER_FLAGS_DEBUG /NODEFAULTLIB:\"libcmt.lib\")
-		ENDIF()
-		
-		ADD_DEFINITIONS( "-D_UNICODE" "-DUNICODE" ) #"-DGLEW_STATIC" )
+        SET( FRAMEWORK_LIBS glfw3.lib )
+    ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
+        #
+        # Force static runtime linking and ignore libcmt.lib in MSVC for cinder
+        #
+        IF( MSVC )
+            foreach(flag_var
+                CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+                if(${flag_var} MATCHES "/MD")
+                    string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+                endif(${flag_var} MATCHES "/MD")
+            endforeach(flag_var)
+            
+            SET(CMAKE_EXE_LINKER_FLAGS_DEBUG /NODEFAULTLIB:\"libcmt.lib\")
+        ENDIF()
+        
+        ADD_DEFINITIONS( "-D_UNICODE" "-DUNICODE" ) #"-DGLEW_STATIC" )
     ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
         SET( CONSOLE_SYSTEM WIN32 )
     ENDIF()
@@ -196,8 +196,8 @@ IF( GL_FRAMEWORK STREQUAL "SDL" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
     SET( SKELETON_FILE "glfw2_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
-    #SET( SKELETON_FILE "glfw3_skeleton.cpp" )
-    SET( SKELETON_FILE "glfw3_skeleton_2win.cpp" )
+    SET( SKELETON_FILE "glfw3_skeleton.cpp" )
+    #SET( SKELETON_FILE "glfw3_skeleton_2win.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
     SET( SKELETON_FILE "cinder_skeleton.cpp" )
 ELSEIF( GL_FRAMEWORK STREQUAL "GLUT" )
@@ -218,11 +218,9 @@ TARGET_LINK_LIBRARIES( ${PROJECT_NAME}
 )
 
 #
-#	Add Cinder's build specific lib file 
+# Add Cinder's build specific lib file 
 #
 IF( GL_FRAMEWORK STREQUAL "CINDER" )
-
-	TARGET_LINK_LIBRARIES( ${PROJECT_NAME} debug cinder_d.lib )
-	TARGET_LINK_LIBRARIES( ${PROJECT_NAME} optimized cinder.lib )
-
+    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} debug cinder_d.lib )
+    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} optimized cinder.lib )
 ENDIF()
