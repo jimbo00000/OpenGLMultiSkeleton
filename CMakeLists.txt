@@ -10,9 +10,9 @@ INCLUDE(cmake_modules/HardcodeShaders.cmake)
 # Choose from the following frameworks here:
 # GLUT, GLFW2, GLFW3, SDL, PEZ, CINDER
 #
-SET( GL_FRAMEWORK "GLFW3" )
+SET( GL_FRAMEWORK "GLFW3" CACHE STRING "Which OpenGL windowing framework to use" )
 
-SET( USE_ANTTWEAKBAR TRUE CACHE BOOL "Use OpenMP" )
+SET( USE_ANTTWEAKBAR TRUE CACHE BOOL "Use AntTweakBar" )
 
 #
 # Platform-dependent section: Windows, Linux, MacOS
