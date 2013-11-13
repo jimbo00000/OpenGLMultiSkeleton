@@ -209,6 +209,15 @@ void GlutAppSkeleton::mouseMove(int x, int y)
 
 void GlutAppSkeleton::keyboard(int key, int x, int y)
 {
+    switch(key)
+    {
+    default:
+        break;
+
+    case 27: // Escape
+        exit(0);
+        break;
+    }
     TriAppSkeleton::keyboard(key, x, y);
 }
 
