@@ -40,7 +40,7 @@ GlutAppSkeleton::GlutAppSkeleton()
     paramlist = NULL;
     paramlistA = NULL;
 
-    //InitParameters();
+    InitParameters();
 }
 
 GlutAppSkeleton::~GlutAppSkeleton()
@@ -54,8 +54,12 @@ void GlutAppSkeleton::InitParameters()
         paramlistA = new ParamListGL("Parameters");
         paramlistA->SetBarColorInner(0.8f, 0.2f, 0.2f);
 
-        paramlistA->AddParam(new Param<float>("timestep", g_colorVal, 
-                                  0.0f, 1.0f, .1f, &(g_colorVal)));
+        paramlistA->AddParam(new Param<float>("rotation.x", g_rotation.x,
+                                       0.0f, 360.0f, .1f, &(g_rotation.x)));
+        paramlistA->AddParam(new Param<float>("rotation.y", g_rotation.y,
+                                       0.0f, 360.0f, .1f, &(g_rotation.y)));
+        paramlistA->AddParam(new Param<float>("rotation.z", g_rotation.z,
+                                       0.0f, 360.0f, .1f, &(g_rotation.z)));
     }
     paramlist = paramlistA;
 }
