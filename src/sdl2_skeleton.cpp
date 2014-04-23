@@ -103,6 +103,14 @@ int main(int argc, char *argv[])
                 if (event.key.keysym.sym == SDLK_ESCAPE)
                     quit = 1;
             }
+            else if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                g_app.mouseDown(event.button.button, event.button.state, event.button.x, event.button.y);
+            }
+            else if (event.type == SDL_MOUSEMOTION)
+            {
+                g_app.mouseMove(event.motion.x, event.motion.y);
+            }
             else if (event.type == SDL_QUIT)
             {
                 quit = 1;
