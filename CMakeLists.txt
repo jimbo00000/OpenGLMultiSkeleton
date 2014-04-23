@@ -24,56 +24,45 @@ IF( WIN32 )
     #
     SET( GL_LIBS_HOME "C:/lib" CACHE PATH "Location of support libraries" )
 
-    SET( GLUT_ROOT "${GL_LIBS_HOME}/glut-3.7.6-bin" )
+    SET( GLUT_ROOT "${GL_LIBS_HOME}/glut-3.7.6-bin" CACHE STRING "GLUT root" )
+    SET( GLFW_ROOT "${GL_LIBS_HOME}/glfw-2.7.8.bin.WIN32" CACHE STRING "GLFW2 root" )
+    SET( GLFW3_ROOT "${GL_LIBS_HOME}/glfw-3.0.4.bin.WIN32" CACHE STRING "GLFW3 root" )
+    SET( SDL_ROOT "${GL_LIBS_HOME}/SDL-1.2.15" CACHE STRING "SDL root" )
+    SET( SDL2_ROOT "${GL_LIBS_HOME}/SDL2-2.0.3" CACHE STRING "SDL2 root" )
+    SET( GLEW_ROOT "${GL_LIBS_HOME}/glew" CACHE STRING "GLEW root" )
+    SET( CINDER_ROOT "${GL_LIBS_HOME}/cinder_0.8.5_vc2010" CACHE STRING "Cinder root" )
+
+    # TODO: remove paramGL dependency on Glut
     INCLUDE_DIRECTORIES( "${GLUT_ROOT}" )
     LINK_DIRECTORIES   ( "${GLUT_ROOT}" )
 
-    SET( GLFW_ROOT "${GL_LIBS_HOME}/glfw-2.7.8.bin.WIN32" )
-    INCLUDE_DIRECTORIES( "${GLFW_ROOT}/include" )
-    LINK_DIRECTORIES   ( "${GLFW_ROOT}/lib-msvc100" )
-
-    SET( GLFW3_ROOT "${GL_LIBS_HOME}/glfw-3.0.1.bin.WIN32" )
-    INCLUDE_DIRECTORIES( "${GLFW3_ROOT}/include" )
-    LINK_DIRECTORIES   ( "${GLFW3_ROOT}/lib-msvc100" )
-
-    #SET( SDL_ROOT "${GL_LIBS_HOME}/SDL-1.2.15" )
-    #INCLUDE_DIRECTORIES( "${SDL_ROOT}/include" )
-    #LINK_DIRECTORIES   ( "${SDL_ROOT}/lib/x86" )
-
-    SET( SDL2_ROOT "${GL_LIBS_HOME}/SDL2-2.0.3" )
-    INCLUDE_DIRECTORIES( "${SDL2_ROOT}/include" )
-    LINK_DIRECTORIES   ( "${SDL2_ROOT}/lib/x86" )
-
-    SET( GLEW_ROOT "${GL_LIBS_HOME}/glew" )
     INCLUDE_DIRECTORIES( "${GLEW_ROOT}/include" )
     LINK_DIRECTORIES   ( "${GLEW_ROOT}/lib" )
     #ADD_DEFINITIONS( -DGLEW_STATIC )
-
-    SET( CINDER_ROOT "${GL_LIBS_HOME}/cinder_0.8.5_vc2010" )
-    INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
-    LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
-
-    IF( USE_ANTTWEAKBAR )
-        SET( ANTTWEAKBAR_ROOT "${GL_LIBS_HOME}/AntTweakBar_116/AntTweakBar" )
-        INCLUDE_DIRECTORIES( "${ANTTWEAKBAR_ROOT}/include" )
-        LINK_DIRECTORIES   ( "${ANTTWEAKBAR_ROOT}/lib" )
-        SET( ANT_LIBS AntTweakBar.lib )
-        ADD_DEFINITIONS( -DUSE_ANTTWEAKBAR )
-    ENDIF( USE_ANTTWEAKBAR )
 
 
     #
     # Framework and platform-dependent lib section
     #
     IF( GL_FRAMEWORK STREQUAL "SDL" )
+        INCLUDE_DIRECTORIES( "${SDL_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${SDL_ROOT}/lib/x86" )
         SET( FRAMEWORK_LIBS SDL.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "SDL2" )
+        INCLUDE_DIRECTORIES( "${SDL2_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${SDL2_ROOT}/lib/x86" )
         SET( FRAMEWORK_LIBS SDL2.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW2" )
+        INCLUDE_DIRECTORIES( "${GLFW_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${GLFW_ROOT}/lib-msvc100" )
         SET( FRAMEWORK_LIBS glfw.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "GLFW3" )
+        INCLUDE_DIRECTORIES( "${GLFW3_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${GLFW3_ROOT}/lib-msvc110" )
         SET( FRAMEWORK_LIBS glfw3.lib )
     ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
+        INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
+        LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
         #
         # Force static runtime linking and ignore libcmt.lib in MSVC for cinder
         #
@@ -93,6 +82,15 @@ IF( WIN32 )
     ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
         SET( CONSOLE_SYSTEM WIN32 )
     ENDIF()
+
+
+    IF( USE_ANTTWEAKBAR )
+        SET( ANTTWEAKBAR_ROOT "${GL_LIBS_HOME}/AntTweakBar_116/AntTweakBar" CACHE STRING "AntTweakBar root" )
+        INCLUDE_DIRECTORIES( "${ANTTWEAKBAR_ROOT}/include" )
+        LINK_DIRECTORIES   ( "${ANTTWEAKBAR_ROOT}/lib" )
+        SET( ANT_LIBS AntTweakBar.lib )
+        ADD_DEFINITIONS( -DUSE_ANTTWEAKBAR )
+    ENDIF( USE_ANTTWEAKBAR )
 
     SET( PLATFORM_LIBS
         ${FRAMEWORK_LIBS}
