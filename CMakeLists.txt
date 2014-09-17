@@ -63,6 +63,7 @@ IF( WIN32 )
     ELSEIF( GL_FRAMEWORK STREQUAL "CINDER" )
         INCLUDE_DIRECTORIES( "${CINDER_ROOT}/include" "${CINDER_ROOT}/boost" )
         LINK_DIRECTORIES   ( "${CINDER_ROOT}/lib" "${CINDER_ROOT}/lib/msw" )
+        SET( FRAMEWORK_LIBS optimized cinder.lib debug cinder_d.lib )
         #
         # Force static runtime linking and ignore libcmt.lib in MSVC for cinder
         #
@@ -77,7 +78,7 @@ IF( WIN32 )
             
             SET(CMAKE_EXE_LINKER_FLAGS_DEBUG /NODEFAULTLIB:\"libcmt.lib\")
         ENDIF()
-        
+
         ADD_DEFINITIONS( "-D_UNICODE" "-DUNICODE" ) #"-DGLEW_STATIC" )
     ELSEIF( GL_FRAMEWORK STREQUAL "PEZ" )
         SET( CONSOLE_SYSTEM WIN32 )
@@ -223,11 +224,3 @@ TARGET_LINK_LIBRARIES( ${PROJECT_NAME}
     PROJ_LIBS
     ${PLATFORM_LIBS}
 )
-
-#
-# Add Cinder's build specific lib file 
-#
-IF( GL_FRAMEWORK STREQUAL "CINDER" )
-    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} debug cinder_d.lib )
-    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} optimized cinder.lib )
-ENDIF()
